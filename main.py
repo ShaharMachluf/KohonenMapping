@@ -1,5 +1,5 @@
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 # Function to initialize the weight vectors
 def initialize_weights(grid_size, input_dim):
@@ -65,3 +65,14 @@ sorted_weights = weights[sorted_indices]
 # Print the sorted weight vectors
 print("Sorted Weight Vectors:")
 print(sorted_weights)
+
+points = np.array(sorted_weights)
+x = [point[0] for point in points]
+y = [point[1] for point in points]
+
+# Scatter plot
+plt.scatter(x, y)
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Scatter Plot of Weights')
+plt.show()
