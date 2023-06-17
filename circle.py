@@ -22,6 +22,8 @@ def update_weights(bmu_index, input_vector, weights, learning_rate, neighborhood
 def kohonen_algorithm(dataset, grid_size, learning_rate, neighborhood_radius, num_iterations):
     input_dim = dataset.shape[1]
     weights = initialize_weights(grid_size, input_dim)
+    weights = weights - 0.5
+    weights = weights * 2
 
     for iteration in range(num_iterations):
         np.random.shuffle(dataset)
@@ -46,22 +48,18 @@ def kohonen_algorithm(dataset, grid_size, learning_rate, neighborhood_radius, nu
 
     return weights
 
+points = []
+while len(points) < 1000:
+    x = np.random.uniform(-4, 4)
+    y = np.random.uniform(-4, 4)
+    distance_squared = x**2 + y**2
+    if 4 <= distance_squared <= 16:
+        points.append((x, y))
 
-dataset = np.random.rand(1000, 2)
+dataset = np.array(points)
 
-# dataset[:, 1] = dataset[:, 0] + 0.1 * np.random.randn(1000) - 0.05  #  y = x +/- noise
-
-# y is normal distribution
-# iter = 5
-# for i in range(iter):
-#     random_numbers = np.random.randn(1000)
-#     normalized_numbers = (random_numbers - random_numbers.min()) / (random_numbers.max() - random_numbers.min())
-#
-#     dataset[:, 1] += normalized_numbers
-# dataset[:, 1] = dataset[:, 1] / iter
-
-grid_size = 20
+grid_size = 300
 learning_rate = 0.1
-neighborhood_radius = 5
+neighborhood_radius = 10
 num_iterations = 100
 weights = kohonen_algorithm(dataset, grid_size, learning_rate, neighborhood_radius, num_iterations)
