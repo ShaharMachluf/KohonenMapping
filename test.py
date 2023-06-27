@@ -1,27 +1,30 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from sompy import SOMFactory
+from minisom import MiniSom
 
 # Generate sample data
 data = np.random.rand(100, 10)  # 100 samples with 10 features
 
 # Define SOM parameters
-map_size = [20, 20]  # Size of the SOM grid
-som = SOMFactory.build(data, map_size, mask=None, mapshape='planar', lattice='rect')
+map_size = (20, 20)  # Size of the SOM grid
+input_len = data.shape[1]  # Number of input features
+
+# Initialize the SOM
+som = MiniSom(map_size[0], map_size[1], input_len, sigma=1.0, learning_rate=0.5)
+
+# Initialize the weights with random values
+som.random_weights_init(data)
 
 # Initialize a figure for visualization
 fig = plt.figure()
 
 # Train the SOM
 for i in range(1000):  # Perform 1000 iterations
-    som.train(1)  # Train for one iteration
-
-    # Get the trained SOM grid
-    som_grid = som._normalizer.denormalize_by(som.data_raw, som.codebook.matrix)
+    som.update(data[i % len(data)], som.winner(data[i % len(data)]), i, 1000)  # Update the SOM with a data sample
 
     # Plot the SOM grid
     plt.clf()
-    plt.imshow(som_grid, origin='lower')
+    plt.imshow(som.get_weights().T, origin='lower')
     plt.title(f'Iteration {i+1}')
     plt.colorbar()
     plt.pause(0.01)  # Pause for a short time to display the plot
