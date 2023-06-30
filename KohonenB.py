@@ -25,7 +25,7 @@ def update_weights(bmu_index, input_vector, weights, learning_rate, neighborhood
 
     for i in range(weights.shape[0]):
         distance = np.linalg.norm(weights[bmu_index]-weights[i])
-        influence = np.exp((-distance**2)/2*neighborhood_radius**2) / neighborhood_radius**2
+        influence = np.exp((-distance**2)/2*neighborhood_radius**2) / neighborhood_radius
         if distance <= neighborhood_radius:
             delta = learning_rate * influence * (input_vector - weights[i])
             weights[i] += delta
@@ -71,7 +71,7 @@ def getDataFromImage(path):
     return points
 
 # scatter data
-data = getDataFromImage('hand_wo_finger.png')
+data = getDataFromImage('hand.png')
 data = np.array(data)
 data = data / 100
 data[:, 1] = 1 - data[:, 1]
